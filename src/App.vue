@@ -1,30 +1,45 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/agents">Agents</router-link> |
-  </div>
+  <TabMenu :model="items" />
   <router-view />
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component';
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+export default class App extends Vue {
+  public items = [  {
+                   label:'Agents',
+                   icon:'pi pi-fw pi-user',
+                   to: '/agents' },
+                   {
+                   label:'Customers',
+                   icon:'pi pi-fw pi-users',
+                   to: '/' },
+                   ] 
+  public message = '';
+  public text = '';
+  public greet() {
+    if (this.text.length) {
+      this.message = 'Hello ' + this.text;
     }
   }
+}
+</script>
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+.app-container {
+  text-align: center;
+}
+body #app .p-button {
+  margin-left: .2em;
+}
+form {
+  margin-top: 2em;
 }
 </style>

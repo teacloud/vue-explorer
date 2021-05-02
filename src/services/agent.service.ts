@@ -2,6 +2,7 @@ import http from "../http-common";
 
 class AgentService {
   getAll() {
+    console.log(http)
     return http.get("/agents");
   }
 
@@ -18,7 +19,7 @@ class AgentService {
   }
 
   findByName(name: string) {
-    return http.get(`/tutorials?name=${name}`);
+    return http.get(`/agents?name=${name}`);
   }
 }
 
