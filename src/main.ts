@@ -12,6 +12,8 @@ import Card from 'primevue/card';
 import Avatar from 'primevue/avatar';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import ProgressBar from 'primevue/progressbar';
+
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
@@ -22,6 +24,7 @@ app.component('InputText', InputText);
 app.component('Button', Button);
 app.component('TabMenu', TabMenu);
 app.component('Card', Card);
-app.component('Avatar', Avatar)
+app.component('Avatar', Avatar);
+app.component('ProgressBar', ProgressBar);
 app.use(store).use(router);
 app.mount("#app");

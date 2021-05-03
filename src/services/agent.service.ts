@@ -6,6 +6,7 @@ class AgentService {
   }
 
   get(id: string) {
+    console.log('this is id', id)
     return http.get(`/agents/${id}`);
   }
 
@@ -13,8 +14,8 @@ class AgentService {
     return http.post("/agents", data);
   }
 
-  update(id: string, data: any) {
-    return http.put(`/agents/${id}`, data);
+  update(id: number, data: any) {
+    return http.put(`/agents/${id.toString()}`, data);
   }
 
   findByName(name: string) {

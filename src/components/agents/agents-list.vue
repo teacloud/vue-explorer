@@ -1,4 +1,5 @@
-<template class="p-2">
+<template>
+<div class="p-2 bg-blue-50">
   <div class="text-center justify-center gap-1 pb-2">
     <InputText
       class="w-3/6"
@@ -75,6 +76,7 @@
       </template>
     </Card>
   </div>
+</div>
 </template>
 
 <script lang="ts">
@@ -125,7 +127,7 @@ export default class AgentsList extends Vue {
     //   });
   }
 
-  mounted() {
+  created() {
     this.getAgents();
   }
 }
