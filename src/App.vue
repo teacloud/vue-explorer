@@ -14,7 +14,7 @@ export default class App extends Vue {
                    {
                    label:'Customers',
                    icon:'pi pi-fw pi-users',
-                   to: '/comingsoon' },
+                   to: '/customers' },
                    ] 
 
 }

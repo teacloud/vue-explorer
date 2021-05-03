@@ -4,6 +4,7 @@ import EditAgentComponent from "../components/agents/edit-agent.vue"
 import AddAgentComponent from "../components/agents/add-agent.vue"
 import AgentListComponent from "../components/agents/agents-list.vue"
 import CustomersListComponent from "../components/customers/customers-list.vue"
+import AddCustomerComponent from "../components/customers/add-customer.vue"
 import ComingSoonComponent from "../components/common-ui/coming-soon.vue"
 
 const routes: Array<RouteRecordRaw> = [
@@ -30,7 +31,15 @@ const routes: Array<RouteRecordRaw> = [
     component: CustomersListComponent
   },
   {
-    path: "/comingsoon",
+    path: "/customers/:agentId/add",
+    component: AddCustomerComponent
+  },
+  {
+    path: "/customers",
+    component: ComingSoonComponent
+  },
+  {
+    path: "/customers/:id",
     component: ComingSoonComponent
   },
   // {

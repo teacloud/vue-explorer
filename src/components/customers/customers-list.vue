@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 bg-blue-50">
+  <div class="p-2 bg-gray-200">
     <div class="text-center justify-center gap-1 pb-2">
       Agent: {{ $route.params.id }}
 
@@ -16,7 +16,7 @@
         icon="pi pi-plus"
         class="p-button-raised p-button-rounded w-20"
         label="Add"
-        @click="$router.push('/customers/add')"
+        @click="$router.push(`/customers/${$route.params.id}/add`)"
       />
     </div>
     <div class="flex flex-wrap">
@@ -40,12 +40,7 @@
                   <span class="pi pi-map-marker"></span>
                   <span class="col-span-8">
                     {{ customer.address }}
-                    <div>{{ customer.city }}, {{ customer.state }}</div>
                   </span>
-                </div>
-                <div class="grid grid-cols-9">
-                  <span class="pi pi-phone"></span>
-                  <span class="col-span-8"> {{ customer.phone.primary }}</span>
                 </div>
               </div>
             </div>
@@ -59,6 +54,13 @@
               label="edit"
               class="p-button-secondary p-button-rounded p-button-link p-button-sm"
               @click="editCustomer(customer, index)"
+            />
+            <Button
+              type="button"
+              icon="pi pi-trash"
+              label="delete"
+              class="p-button-secondary p-button-rounded p-button-link p-button-sm"
+              @click="deleteCustomer(customer, index)"
             />
           </span>
         </template>
@@ -111,6 +113,15 @@ export default class CustomersListComponent extends Vue {
 
   created() {
     this.getCustomers();
+  }
+  deleteCustomer(customer) {
+    CustomerService.delete(customer._id)
+      .then((response) =>{
+        window.alert("delete success");
+      })
+      .catch((e) => {
+        window.alert(`delete failed: ${e}`);
+      });
   }
 }
 </script>

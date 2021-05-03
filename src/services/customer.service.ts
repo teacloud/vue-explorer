@@ -14,12 +14,16 @@ class AgentService {
     return http.post("/customers", data);
   }
 
-  update(id: number, data: any) {
-    return http.put(`/customers/${id.toString()}`, data);
+  update(id: string, data: any) {
+    return http.put(`/customers/${id}`, data);
   }
 
   findByName(name: string) {
     return http.get(`/customers?name=${name}`);
+  }
+
+  delete(id: string){
+    return http.delete(`/customers/${id}`);
   }
 }
 
