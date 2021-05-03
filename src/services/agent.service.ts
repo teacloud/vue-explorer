@@ -2,7 +2,6 @@ import http from "../http-common";
 
 class AgentService {
   getAll() {
-    console.log(http)
     return http.get("/agents");
   }
 

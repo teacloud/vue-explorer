@@ -1,100 +1,119 @@
-<template>
-<div class="p-6">
+<template class="p-2">
+  <div class="text-center justify-center gap-1 pb-2">
+    <InputText
+      class="w-3/6"
+      type="text"
+      placeholder="Search agent"
+      v-model="name"
+    />
+    <Button
+      type="button"
+      icon="pi pi-search"
+      class="p-button-secondary p-button-link p-button-rounded w-1/6"
+      @click="searchName"
+      iconPos="right"
+    />
+    <Button
+      type="button"
+      icon="pi pi-plus"
+      class="p-button-raised p-button-rounded w-20"
+      label="Add"
+      @click="searchName"
+    />
+  </div>
+  <div class="flex flex-wrap">
+    <Card
+      class="m-1 w-60"
+      v-for="(agent, index) in agents"
+      :key="index"
+    >
+      <template #content>
+        <div class="grid grid-cols-7 gap-1 space-x-1">
+          <div class="">
+            <Avatar v-bind:label="getInitials(agent)" shape="circle" />
+          </div>
 
-        <InputText type="text"  
-        placeholder="Search by name"
-        v-model="name"/>
-        <Button type="button" label="Search" @click="searchName"/>
-</div>
-    <div class="col-md-6">
-      <h4>Agents List</h4>
-      <ul class="list-group">
-        <li
-          class="list-group-item"
-          :class="{ active: index == currentIndex }"
-          v-for="(agent, index) in agents"
-          :key="index"
-          @click="setActiveAgent(agent, index)"
-        >
-          {{ agent.name }}
-        </li>
-      </ul>
-    </div>
-    <div class="col-md-6">
-      <div v-if="currentAgent">
-        <h4>Agent</h4>
-        <div>
-          <label><strong>Name:</strong></label> {{ currentAgent.name }}
+          <div class="col-span-6">
+            <div class="font-bold">
+              {{ agent.name }}
+            </div>
+            <div class="text-xs">
+              <div class="grid grid-cols-9">
+                <span class="pi pi-map-marker"></span>
+                <span class="col-span-8">
+                  {{ agent.address }}
+                  <div>{{ agent.city }}, {{ agent.state }}</div>
+                </span>
+              </div>
+              <div class="grid grid-cols-9">
+                <span class="pi pi-phone"></span>
+                <span class="col-span-8"> {{ agent.phone.primary }}</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-          <label><strong>Address:</strong></label>
-          {{ currentAgent.address }}
-          <div>
-          {{ currentAgent.city }} , {{currentAgent.state}} {{currentAgent.zipCode}}
-        </div>
-        </div>
-        
-
-        <a
-          class="badge badge-warning"
-          :href="'/agents/' + currentAgent.id"
-        >
-          Edit
-        </a>
-      </div>
-    </div>
+      </template>
+      <template #footer>
+        <span class="pl-6">
+          <Button
+            type="button"
+            icon="pi pi-pencil"
+            label="edit"
+            class="p-button-secondary p-button-rounded p-button-link p-button-sm"
+             @click="editAgent(agent, index)"
+          />
+        </span>
+        <span>
+          <Button
+            type="button"
+            icon="pi pi-users"
+            label="customers"
+            class="p-button-secondary p-button-rounded p-button-link p-button-sm"
+            @click="showCustomers(agent, index)"
+          />
+        </span>
+      </template>
+    </Card>
+  </div>
 </template>
 
 <script lang="ts">
+import { Agent } from "@/models/agent.model";
 import { Vue } from "vue-class-component";
 import AgentService from "../../services/agent.service";
 
 export default class AgentsList extends Vue {
   private agents: any[] = [];
-  private currentAgent: any = null;
-  private currentIndex = -1;
-  private title = "";
+  private name = "";
 
-  retrieveAgents() {
-    AgentService.get("101")
-      .then((response) => {
-        console.log("simple get", response.data);
-      })
-      .catch((e) => {
-        console.log("simple get", e);
-      });
+  getAgents() {
     return AgentService.getAll()
       .then((response) => {
         this.agents = response.data;
-        console.log("get all", response.data);
       })
       .catch((e) => {
-        console.log("get all", e);
+        console.log('hlelo')
       });
   }
 
-  refreshList() {
-    this.retrieveAgents();
-    this.currentAgent = null;
-    this.currentIndex = -1;
+  getInitials(agent: Agent): string {
+    const namesArray = agent.name.trim().split(" ");
+    if (namesArray.length === 1) return `${namesArray[0].charAt(0)}`;
+    else
+      return `${namesArray[0].charAt(0)}${namesArray[
+        namesArray.length - 1
+      ].charAt(0)}`;
   }
 
-  setActiveAgent(agent: any, index: number) {
-    this.currentAgent = agent;
-    this.currentIndex = index;
-  }
+  showCustomers(agent: Agent, index: number) {
+    console.log("show customers")
 
-  removeAllAgents() {
-    // AgentService.delete()
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     this.refreshList();
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
   }
+  editAgent(agent: Agent, index: number) {
+    const link = `/agents/${agent._id}`;
+    this.$router.push(link);
 
+  }
   searchName() {
     // AgentDataService.findByTitle(this.title)
     //   .then((response) => {
@@ -107,15 +126,21 @@ export default class AgentsList extends Vue {
   }
 
   mounted() {
-    this.retrieveAgents();
+    this.getAgents();
   }
 }
 </script>
 
-<style scoped>
-.list {
-  text-align: left;
-  max-width: 750px;
-  margin: auto;
+<style lang="scss" scoped>
+::v-deep(.p-card) {
+  .p-card-content {
+    padding: 0;
+  }
+  .p-card-body {
+    padding: 0.5rem;
+  }
+  .p-card-footer {
+    padding: 0rem;
+  }
 }
 </style>
