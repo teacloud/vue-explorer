@@ -6,20 +6,15 @@
       type="text"
       placeholder="Search agent"
       v-model="name"
+      @change="searchName"
     />
-    <Button
-      type="button"
-      icon="pi pi-search"
-      class="p-button-secondary p-button-link p-button-rounded w-1/6"
-      @click="searchName"
-      iconPos="right"
-    />
+
     <Button
       type="button"
       icon="pi pi-plus"
       class="p-button-raised p-button-rounded w-20"
       label="Add"
-      @click="searchName"
+      @click="$router.push('/agents/add')"
     />
   </div>
   <div class="flex flex-wrap">

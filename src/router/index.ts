@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import Home from "../views/Home.vue";
 import EditAgentComponent from "../components/agents/edit-agent.vue"
+import AddAgentComponent from "../components/agents/add-agent.vue"
 import AgentListComponent from "../components/agents/agents-list.vue"
 
 const routes: Array<RouteRecordRaw> = [
@@ -17,6 +18,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/agents/:id",
     component: EditAgentComponent
+  },
+  {
+    path: "/agents/add",
+    component: AddAgentComponent
   },
   // {
   //   path: "/about",

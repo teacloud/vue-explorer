@@ -114,7 +114,7 @@ import AgentService from "../../services/agent.service";
 export default class EditAgentComponent extends Vue {
   private loading = true;
   private error = "";
-  private saveDisabled = true;
+  private saveDisabled = false;
   private validForm = true;
   private agent: Agent | null = null;
   private formData = {
@@ -137,7 +137,7 @@ export default class EditAgentComponent extends Vue {
   }
   save() {
     this.validForm = this.formIsValid();
-    if (this.validForm === true) return;
+    if (this.validForm === false) return;
     else {
       this.updateAgent();
     }
@@ -159,12 +159,14 @@ export default class EditAgentComponent extends Vue {
       });
   }
   private updateAgent() {
+    console.log("hello");
     AgentService.update(this.formData._id, this.formData)
       .then((response) => {
+        this.saveDisabled = true;
         window.alert("Update user success");
       })
       .catch((e) => {
-        this.error = e;
+        window.alert(`Failed: ${e}`);
       });
   }
 
