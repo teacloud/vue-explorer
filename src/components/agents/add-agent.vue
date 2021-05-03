@@ -1,5 +1,5 @@
 <template>
-  <form class="p-2 pt-6 space-y-6" id="app" method="post">
+  <form class="p-2 pt-6 space-y-6 h-full bg-gray-200" id="app" method="post">
     <span class="p-float-label">
       <InputText
         id="name"

@@ -1,10 +1,12 @@
 <template>
-  <div class="h-full p-2 bg-blue-50">
+  <div class="p-2 bg-blue-50">
     <div class="text-center justify-center gap-1 pb-2">
+      Agent: {{ $route.params.id }}
+
       <InputText
         class="w-3/6"
         type="text"
-        placeholder="Search agent"
+        placeholder="Search customer"
         v-model="name"
         @change="searchName"
       />
@@ -14,32 +16,36 @@
         icon="pi pi-plus"
         class="p-button-raised p-button-rounded w-20"
         label="Add"
-        @click="$router.push('/agents/add')"
+        @click="$router.push('/customers/add')"
       />
     </div>
     <div class="flex flex-wrap">
-      <Card class="m-1 w-60" v-for="(agent, index) in agents" :key="index">
+      <Card
+        class="m-1 w-60"
+        v-for="(customer, index) in customers"
+        :key="index"
+      >
         <template #content>
           <div class="grid grid-cols-7 gap-1 space-x-1">
             <div class="">
-              <Avatar v-bind:label="getInitials(agent)" shape="circle" />
+              <Avatar v-bind:label="getInitials(customer)" shape="circle" />
             </div>
 
             <div class="col-span-6">
               <div class="font-bold">
-                {{ agent.name }}
+                {{ customer.name.first }} {{ customer.name.last }}
               </div>
               <div class="text-xs">
                 <div class="grid grid-cols-9">
                   <span class="pi pi-map-marker"></span>
                   <span class="col-span-8">
-                    {{ agent.address }}
-                    <div>{{ agent.city }}, {{ agent.state }}</div>
+                    {{ customer.address }}
+                    <div>{{ customer.city }}, {{ customer.state }}</div>
                   </span>
                 </div>
                 <div class="grid grid-cols-9">
                   <span class="pi pi-phone"></span>
-                  <span class="col-span-8"> {{ agent.phone.primary }}</span>
+                  <span class="col-span-8"> {{ customer.phone.primary }}</span>
                 </div>
               </div>
             </div>
@@ -52,16 +58,7 @@
               icon="pi pi-pencil"
               label="edit"
               class="p-button-secondary p-button-rounded p-button-link p-button-sm"
-              @click="editAgent(agent, index)"
-            />
-          </span>
-          <span>
-            <Button
-              type="button"
-              icon="pi pi-users"
-              label="customers"
-              class="p-button-secondary p-button-rounded p-button-link p-button-sm"
-              @click="showCustomers(agent, index)"
+              @click="editCustomer(customer, index)"
             />
           </span>
         </template>
@@ -71,45 +68,40 @@
 </template>
 
 <script lang="ts">
-import { Agent } from "@/models/agent.model";
+import { Customer } from "@/models/customer.model";
 import { Vue } from "vue-class-component";
-import AgentService from "../../services/agent.service";
+import CustomerService from "../../services/customer.service";
 
-export default class AgentsList extends Vue {
-  private agents: any[] = [];
+export default class CustomersListComponent extends Vue {
+  private customers: any[] = [];
   private name = "";
 
-  getAgents() {
-    return AgentService.getAll()
+  getCustomers() {
+    const fetchedId = this.$route.params.id as string;
+
+    return CustomerService.getCustomersByAgentId(fetchedId)
       .then((response) => {
-        this.agents = response.data;
+        this.customers = response.data;
       })
       .catch((e) => {
         console.log("hlelo");
       });
   }
 
-  getInitials(agent: Agent): string {
-    const namesArray = agent.name.trim().split(" ");
-    if (namesArray.length === 1) return `${namesArray[0].charAt(0)}`;
-    else
-      return `${namesArray[0].charAt(0)}${namesArray[
-        namesArray.length - 1
-      ].charAt(0)}`;
+  getInitials(customer: Customer): string {
+    const firstInitial = customer.name.first.charAt(0);
+    const lastInitial = customer.name.last.charAt(0);
+    return `${firstInitial}${lastInitial}`;
   }
 
-  showCustomers(agent: Agent, index: number) {
-    const link = `/agents/${agent._id}/customers`;
-    this.$router.push(link);
-  }
-  editAgent(agent: Agent, index: number) {
-    const link = `/agents/${agent._id}`;
+  editCustomer(customer: Customer, index: number) {
+    const link = `/customers/${customer._id}`;
     this.$router.push(link);
   }
   searchName() {
-    // AgentDataService.findByTitle(this.title)
+    // CustomerDataService.findByTitle(this.title)
     //   .then((response) => {
-    //     this.agents = response.data;
+    //     this.customers = response.data;
     //     console.log(response.data);
     //   })
     //   .catch((e) => {
@@ -118,7 +110,7 @@ export default class AgentsList extends Vue {
   }
 
   created() {
-    this.getAgents();
+    this.getCustomers();
   }
 }
 </script>

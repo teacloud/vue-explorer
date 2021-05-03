@@ -1,4 +1,5 @@
 <template>
+<div class="h-full bg-gray-200">
   <div v-if="error" class="">{{ error }}</div>
   <div v-if="loading" class="">
     <ProgressBar mode="indeterminate" style="height: 0.5em" />
@@ -104,6 +105,7 @@
       </div>
     </form>
   </div>
+</div>
 </template>
 
 <script lang="ts">
